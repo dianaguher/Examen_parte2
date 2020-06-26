@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Lots</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Lots</string>
+    <string name="menu_gallery">States</string>
+    <string name="menu_slideshow">History</string>
+
+
+    <string name="hint_lot">Lot name…</string>
+    <string name="hint_meter">Square meter…</string>
+    <string name="hint_photo">Photo…</string>
+    <string name="hint_video">Video…</string>
+    <string name="button_save">Save</string>
+    <string name="button_update">Update</string>
+    <string name="empty_not_saved">Lot not saved because it is empty.</string>
+    <string name="lot_added">Added.</string>
+    <string name="lot_updated">Updated.</string>
+    <string name="lot_deleted">Deleted.</string>
+    <string name="delete_all_menu">Delete all lots</string>
+    <string name="delete_all_lots">All lots deleted.</string>
+    <string name="not_updated">Lot not updated because it did not change.</string>
+    <string name="can_not_update">Lot can not be updated.</string>
+</resources>
