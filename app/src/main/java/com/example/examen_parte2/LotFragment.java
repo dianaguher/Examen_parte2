@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.examen_parte2.R;
-import com.example.examen_parte2.ui.home.HomeViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -69,6 +69,9 @@ public class LotFragment extends Fragment {
                 startActivityForResult(intent,UPDATE_LOT_ACTIVITY_REQUEST_CODE);
             }
         });
+
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
+        fab.show();
 
         return root;
     }

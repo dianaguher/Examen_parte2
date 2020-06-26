@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.examen_parte2.ui.gallery.GalleryFragment"
+        android:name="com.example.examen_parte2.LotStatusFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_lot_status" />
 
     <fragment
         android:id="@+id/nav_slideshow"
