@@ -30,6 +30,7 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
 
     private final LayoutInflater mInflater;
     private List<Lot> mLots = Collections.emptyList();
+    private List<History> mHistories = Collections.emptyList();
     private onItemClickListener listener;
 
     LotStatusAdapter(Context context) {
@@ -38,6 +39,11 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
 
     void setLots(List<Lot> lots) {
         mLots = lots;
+        notifyDataSetChanged();
+    }
+
+    void setHistories(List<History> histories){
+        mHistories = histories;
         notifyDataSetChanged();
     }
 
@@ -56,12 +62,33 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
     public void onBindViewHolder(LotViewHolder holder, final int position) {
         final Lot current = mLots.get(position);
         holder.lotItemView.setText(current.getLot());
-        holder.lotItemView.setTextColor(Color.parseColor("#5AAC70"));
+        if(holder.lotItemView.getCurrentTextColor() == -16777216){
+            holder.lotItemView.setTextColor(Color.parseColor("#5AAC70")); //green
+        }
+      /*  if (mHistories.isEmpty()){
+            holder.lotItemView.setTextColor(Color.parseColor("#5AAC70")); //green
+        }else{
+            for(History history : mHistories)
+            {
+                if(current.getId() == history.getLotId()){
+                    if(history.getColor().equals("red")){
+                        holder.lotItemView.setTextColor(Color.parseColor("#BC0606")); //red
+                    } else if(history.getColor().equals("orange")){
+                        holder.lotItemView.setTextColor(Color.parseColor("#FF6E40")); //orange
+                    }else{
+                        holder.lotItemView.setTextColor(Color.parseColor("#5AAC70")); //green
+                    }
+                }else{
+                    holder.lotItemView.setTextColor(Color.parseColor("#5AAC70")); //green
+                }
+            }
+        }*/
+       // holder.lotItemView.setTextColor(Color.parseColor("#5AAC70")); //green
     }
 
     class LotViewHolder extends RecyclerView.ViewHolder {
         private final TextView lotItemView;
-        private LotViewHolder(View itemView) {
+        private LotViewHolder(final View itemView) {
             super(itemView);
             lotItemView = itemView.findViewById(R.id.lot);
 
@@ -70,7 +97,7 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if(listener!= null && position != RecyclerView.NO_POSITION){
-                        listener.onItemClick(mLots.get(position));
+                        listener.onItemClick(mLots.get(position),lotItemView.getCurrentTextColor());
                     }
                 }
             });
@@ -78,8 +105,9 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
     }
 
     public interface onItemClickListener{
-        void onItemClick(Lot lot);
+        void onItemClick(Lot lot,int color);
     }
+
     public  void setOnItemClickListener(onItemClickListener listener){
         this.listener = listener;
     }

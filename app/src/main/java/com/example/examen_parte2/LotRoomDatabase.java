@@ -9,7 +9,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 
-@Database(entities = {Lot.class}, version = 1)
+@Database(entities = {Lot.class, History.class}, version = 5, exportSchema = false)
 public abstract class LotRoomDatabase extends RoomDatabase {
 
     public abstract LotDao lotDao();
@@ -36,7 +36,7 @@ public abstract class LotRoomDatabase extends RoomDatabase {
 
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
-             // super.onCreate(db);
+            // super.onCreate(db);
             super.onOpen(db);
             // If you want to keep the data through app restarts,
             // comment out the following line.
@@ -52,26 +52,23 @@ public abstract class LotRoomDatabase extends RoomDatabase {
             mDao = db.lotDao();
         }
 
+
         @Override
         protected Void doInBackground(final Void... params) {
             // Start the app with a clean database every time.
             // Not needed if you only populate on creation.
             mDao.deleteAll();
+            mDao.deleteAllHistories();
 
-            Lot lot = new Lot("Lot 1","4","25/06/2020","25/06/2020",
-                    "30/06/2020","photo","video");
+            Lot lot = new Lot("Lot 1","4","25/06/2020","photo","video");
             mDao.insert(lot);
-            lot = new Lot("Lot 2","4","25/06/2020","25/06/2020",
-                    "30/06/2020","photo","video");
+            lot = new Lot("Lot 2","4","25/06/2020","photo","video");
             mDao.insert(lot);
-            lot = new Lot("Lot 3","4","25/06/2020","25/06/2020",
-                    "30/06/2020","photo","video");
+            lot = new Lot("Lot 3","4","25/06/2020","photo","video");
             mDao.insert(lot);
-            lot = new Lot("Lot 4","4","25/06/2020","25/06/2020",
-                    "30/06/2020","photo","video");
+            lot = new Lot("Lot 4","4","25/06/2020","photo","video");
             mDao.insert(lot);
-            lot = new Lot("Lot 5","4","25/06/2020","25/06/2020",
-                    "30/06/2020","photo","video");
+            lot = new Lot("Lot 5","4","25/06/2020","photo","video");
             mDao.insert(lot);
             return null;
         }

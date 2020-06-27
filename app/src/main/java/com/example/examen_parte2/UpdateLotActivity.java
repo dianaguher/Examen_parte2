@@ -25,8 +25,6 @@ public class UpdateLotActivity extends AppCompatActivity {
     public static final String EXTRA_LOT = "com.example.android.wordlistsql.LOT";
     public static final String EXTRA_METER = "com.example.android.wordlistsql.METER";
     public static final String EXTRA_DATE = "com.example.android.lotlistsql.DATE";
-    public static final String EXTRA_START = "com.example.android.lotlistsql.START";
-    public static final String EXTRA_END = "com.example.android.lotlistsql.END";
     public static final String EXTRA_PHOTO = "com.example.android.wordlistsql.PHOTO";
     public static final String EXTRA_VIDEO = "com.example.android.wordlistsql.VIDEO";
 
@@ -76,15 +74,11 @@ public class UpdateLotActivity extends AppCompatActivity {
                     String meter = mEditMeterView.getText().toString();
                     String photo = mEditPhotoView.getText().toString();
                     String video = mEditVideoView.getText().toString();
-                    String start = "";
-                    String end = "";
                     String date = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
 
                     replyIntent.putExtra(EXTRA_LOT,lot);
                     replyIntent.putExtra(EXTRA_DATE,date);
                     replyIntent.putExtra(EXTRA_METER,meter);
-                    replyIntent.putExtra(EXTRA_START,start);
-                    replyIntent.putExtra(EXTRA_END,end);
                     replyIntent.putExtra(EXTRA_PHOTO,photo);
                     replyIntent.putExtra(EXTRA_VIDEO,video);
 

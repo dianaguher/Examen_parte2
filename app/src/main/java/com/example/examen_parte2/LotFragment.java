@@ -48,11 +48,25 @@ public class LotFragment extends Fragment {
             }
         });
 
+        mLotViewModel.getAllHistories().observe(this, new Observer<List<History>>() {
+            @Override
+            public void onChanged(@Nullable final List<History> histories) {
+                adapter.setHistories(histories);
+            }
+        });
+
         //delete lot
         adapter.setOnItemLongClickListener(new LotListAdapter.onItemLongClickListener() {
             @Override
             public void onItemLongClick(Lot lot) {
                 mLotViewModel.delete(lot);
+                Toast.makeText(getContext(),  R.string.lot_deleted, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onItemLongClick(Lot lot, History history) {
+                mLotViewModel.delete(lot);
+                mLotViewModel.delete(history);
                 Toast.makeText(getContext(),  R.string.lot_deleted, Toast.LENGTH_LONG).show();
             }
         });
@@ -89,8 +103,6 @@ public class LotFragment extends Fragment {
             Lot lot = new Lot(data.getStringExtra(UpdateLotActivity.EXTRA_LOT),
                     data.getStringExtra(UpdateLotActivity.EXTRA_METER),
                     data.getStringExtra(UpdateLotActivity.EXTRA_DATE),
-                    data.getStringExtra(UpdateLotActivity.EXTRA_START),
-                    data.getStringExtra(UpdateLotActivity.EXTRA_END),
                     data.getStringExtra(UpdateLotActivity.EXTRA_PHOTO),
                     data.getStringExtra(UpdateLotActivity.EXTRA_VIDEO));
             lot.setId(id);

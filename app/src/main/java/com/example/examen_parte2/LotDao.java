@@ -22,7 +22,7 @@ import java.util.List;
 public interface LotDao {
 
     @Query("SELECT * from lot_table ORDER BY lot ASC")
-    LiveData<List<Lot>> getAlphabetizedWords();
+    LiveData<List<Lot>> getAlphabetizedLots();
 
     @Insert
     void insert(Lot lot);
@@ -35,4 +35,24 @@ public interface LotDao {
 
     @Query("DELETE FROM lot_table")
     void deleteAll();
+
+   // @Query("UPDATE lot_table SET color = :_color WHERE id = :id")
+   // void update(int id, String _color);
+
+    //histories
+
+    @Query("SELECT * from history_table ORDER BY start ASC")
+    LiveData<List<History>> getAlphabetizedHistories();
+
+    @Insert
+    void insert(History history);
+
+    @Delete
+    void delete(History history);
+
+    @Query("DELETE FROM history_table")
+    void deleteAllHistories();
+
+   // @Query("SELECT * FROM history_table WHERE startDate LIKE :search " + "OR endDate LIKE :search")
+    //LiveData<List<History>> findHistoryByDate(String search);
 }

@@ -13,6 +13,7 @@ import java.util.List;
 
 public class LotViewModel extends AndroidViewModel {
 
+    private LiveData<List<History>> mAllHistories;
     private LotRepository mRepository;
     private LiveData<List<Lot>> mAllLots;
 
@@ -20,11 +21,13 @@ public class LotViewModel extends AndroidViewModel {
         super(application);
         mRepository = new LotRepository(application);
         mAllLots = mRepository.getAllWords();
+        mAllHistories = mRepository.getAllHistories();
     }
 
     LiveData<List<Lot>> getAllWords() {
         return mAllLots;
     }
+
 
     void insert(Lot lot) {
         mRepository.insert(lot);
@@ -35,4 +38,21 @@ public class LotViewModel extends AndroidViewModel {
     void delete(Lot lot){ mRepository.delete(lot);}
 
     void deleteAll(){ mRepository.deleteAll();}
+
+    //histories
+    LiveData<List<History>> getAllHistories() {
+        return mAllHistories;
+    }
+
+    LiveData<List<History>> getHistoriesByDate() {
+        return mAllHistories;
+    }
+
+    void insert(History history) {
+        mRepository.insert(history);
+    }
+
+    void delete(History history){ mRepository.delete(history); }
+
+    void deleteAllHistories(){ mRepository.deleteAllHistories(); }
 }

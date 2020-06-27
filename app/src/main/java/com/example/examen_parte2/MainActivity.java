@@ -72,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
             Lot lot = new Lot(data.getStringExtra(NewLotActivity.EXTRA_LOT),
                     data.getStringExtra(NewLotActivity.EXTRA_METER),
                     data.getStringExtra(NewLotActivity.EXTRA_DATE),
-                    data.getStringExtra(NewLotActivity.EXTRA_START),
-                    data.getStringExtra(NewLotActivity.EXTRA_END),
                     data.getStringExtra(NewLotActivity.EXTRA_PHOTO),
                     data.getStringExtra(NewLotActivity.EXTRA_VIDEO));
             mLotViewModel.insert(lot);
@@ -103,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()){
             case R.id.delete_all_lots:
                 mLotViewModel.deleteAll();
+                mLotViewModel.deleteAllHistories();
                 Toast.makeText(getApplicationContext(), R.string.delete_all_lots, Toast.LENGTH_LONG).show();
                 return true;
             default:

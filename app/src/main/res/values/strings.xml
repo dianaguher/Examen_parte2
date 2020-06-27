@@ -18,12 +18,19 @@
     <string name="hint_video">Video…</string>
     <string name="button_save">Save</string>
     <string name="button_update">Update</string>
+    <string name="button_reserve">Reserve</string>
+    <string name="button_search">Search</string>
     <string name="empty_not_saved">Lot not saved because it is empty.</string>
     <string name="lot_added">Added.</string>
     <string name="lot_updated">Updated.</string>
     <string name="lot_deleted">Deleted.</string>
+    <string name="lot_reserved">Reserved.</string>
     <string name="delete_all_menu">Delete all lots</string>
     <string name="delete_all_lots">All lots deleted.</string>
+    <string name="history_deleted">Deleted.</string>
     <string name="not_updated">Lot not updated because it did not change.</string>
+    <string name="not_reserved">Lot not reserved.</string>
     <string name="can_not_update">Lot can not be updated.</string>
+    <string name="can_not_reserve">Lot can not be reserved.</string>
+    <string name="can_not_search">Select a date.</string>
 </resources>

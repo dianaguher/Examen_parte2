@@ -1,33 +1,19 @@
 package com.example.examen_parte2;
 
 import android.content.Context;
-
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.Collections;
 import java.util.List;
-
-import static androidx.core.app.ActivityCompat.startActivityForResult;
-import static androidx.core.content.ContextCompat.createDeviceProtectedStorageContext;
-import static androidx.core.content.ContextCompat.startActivity;
-
 
 public class LotListAdapter extends RecyclerView.Adapter<LotListAdapter.LotViewHolder> {
 
     private final LayoutInflater mInflater;
     private List<Lot> mLots = Collections.emptyList();
+    private List<History> mHistories = Collections.emptyList();
     private onItemClickListener listener;
     private onItemLongClickListener listener2;
 
@@ -37,6 +23,11 @@ public class LotListAdapter extends RecyclerView.Adapter<LotListAdapter.LotViewH
 
     void setLots(List<Lot> lots) {
         mLots = lots;
+        notifyDataSetChanged();
+    }
+
+    void setHistories(List<History> histories){
+        mHistories = histories;
         notifyDataSetChanged();
     }
 
@@ -78,7 +69,18 @@ public class LotListAdapter extends RecyclerView.Adapter<LotListAdapter.LotViewH
                 public boolean onLongClick(View v) {
                     int position = getAdapterPosition();
                     if(listener2!= null && position != RecyclerView.NO_POSITION){
-                        listener2.onItemLongClick(mLots.get(position));
+                        Lot lot = mLots.get(position);
+                        if(mHistories.isEmpty()){
+                            listener2.onItemLongClick(lot);
+                        }else{
+                            for(History history : mHistories){
+                                if(lot.getId() == history.getLotId()){
+                                    listener2.onItemLongClick(lot,history);
+                                }else{
+                                    listener2.onItemLongClick(lot);
+                                }
+                            }
+                        }
                     }
                     return true;
                 }
@@ -96,6 +98,7 @@ public class LotListAdapter extends RecyclerView.Adapter<LotListAdapter.LotViewH
 
     public interface onItemLongClickListener{
         void onItemLongClick(Lot lot);
+        void onItemLongClick(Lot lot,History history);
     }
     public  void setOnItemLongClickListener(onItemLongClickListener listener){
         this.listener2 = listener;

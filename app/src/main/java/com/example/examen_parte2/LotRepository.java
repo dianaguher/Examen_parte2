@@ -11,11 +11,13 @@ class LotRepository {
 
     private LotDao mLotDao;
     private LiveData<List<Lot>> mAllLots;
+    private LiveData<List<History>> mAllHistories;
 
     LotRepository(Application application) {
         LotRoomDatabase db = LotRoomDatabase.getDatabase(application);
         mLotDao = db.lotDao();
-        mAllLots = mLotDao.getAlphabetizedWords();
+        mAllLots = mLotDao.getAlphabetizedLots();
+        mAllHistories = mLotDao.getAlphabetizedHistories();
     }
 
     LiveData<List<Lot>> getAllWords() {
@@ -34,6 +36,15 @@ class LotRepository {
 
     void deleteAll(){ new deleteAllAsyncTask(mLotDao).execute(); }
 
+    //histories
+    LiveData<List<History>> getAllHistories() { return mAllHistories; }
+
+    void insert(History history) { new LotRepository.insertHAsyncTask(mLotDao).execute(history); }
+
+    void delete(History history){ new LotRepository.deleteHAsyncTask(mLotDao).execute(history); }
+
+    void deleteAllHistories(){ new LotRepository.deleteAllHAsyncTask(mLotDao).execute(); }
+
     private static class insertAsyncTask extends AsyncTask<Lot, Void, Void> {
 
         private LotDao mAsyncTaskDao;
@@ -50,7 +61,6 @@ class LotRepository {
     }
 
     public static class updateAsyncTask extends AsyncTask<Lot, Void, Void> {
-
         private LotDao lotDao;
 
         updateAsyncTask(LotDao dao) {
@@ -64,6 +74,7 @@ class LotRepository {
             return null;
         }
     }
+
 
     public static class deleteAsyncTask extends AsyncTask<Lot, Void, Void> {
 
@@ -97,4 +108,51 @@ class LotRepository {
         }
     }
 
+  //********************* HISTORIES *****************************
+  private static class insertHAsyncTask extends AsyncTask<History, Void, Void> {
+
+      private LotDao mAsyncTaskDao;
+
+      insertHAsyncTask(LotDao dao) {
+          mAsyncTaskDao = dao;
+      }
+
+      @Override
+      protected Void doInBackground(final History... params) {
+          mAsyncTaskDao.insert(params[0]);
+          return null;
+      }
+  }
+
+   public static class deleteHAsyncTask extends AsyncTask<History, Void, Void> {
+
+        private LotDao lotDao;
+
+        deleteHAsyncTask(LotDao dao) {
+            lotDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final History... params) {
+
+            lotDao.delete(params[0]);
+            return null;
+        }
+    }
+
+     public static class deleteAllHAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        private LotDao lotDao;
+
+        deleteAllHAsyncTask(LotDao dao) {
+            lotDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            lotDao.deleteAllHistories();
+            return null;
+        }
+    }
 }

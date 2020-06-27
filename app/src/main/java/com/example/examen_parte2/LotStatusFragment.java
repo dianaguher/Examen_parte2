@@ -2,6 +2,7 @@ package com.example.examen_parte2;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -21,12 +23,14 @@ import com.example.examen_parte2.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 public class LotStatusFragment extends Fragment {
 
+    public static final int RESERVE_LOT_ACTIVITY_REQUEST_CODE = 3;
     private LotViewModel mLotViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -48,11 +52,53 @@ public class LotStatusFragment extends Fragment {
             }
         });
 
+        mLotViewModel.getAllHistories().observe(this, new Observer<List<History>>() {
+            @Override
+            public void onChanged(@Nullable final List<History> histories) {
+                adapter.setHistories(histories);
+            }
+        });
+
+        adapter.setOnItemClickListener(new LotStatusAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(Lot lot,int color) {
+                if(color == -10834832){
+                    Intent intent = new Intent(getContext(), ReserveLotActivity.class);
+                    intent.putExtra(ReserveLotActivity.EXTRA_LOT_ID, lot.getId());
+                    startActivityForResult(intent,RESERVE_LOT_ACTIVITY_REQUEST_CODE);
+                }else{
+                    Toast.makeText(getContext(),R.string.can_not_reserve, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
         fab.hide();
-
 
         return root;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //reserve lot
+        if (requestCode == RESERVE_LOT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+
+            int id = data.getIntExtra(ReserveLotActivity.EXTRA_LOT_ID,-1);
+            if(id == -1){
+                Toast.makeText(getContext(), R.string.can_not_reserve, Toast.LENGTH_LONG).show();
+                return;
+            }
+
+
+            History history = new History(data.getStringExtra(ReserveLotActivity.EXTRA_START),
+                    data.getStringExtra(ReserveLotActivity.EXTRA_END),
+                    data.getStringExtra(ReserveLotActivity.EXTRA_COLOR), id);
+            mLotViewModel.insert(history);
+            Toast.makeText(getContext(), R.string.lot_reserved, Toast.LENGTH_LONG).show();
+        }else if(requestCode == RESERVE_LOT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_CANCELED){
+            Toast.makeText(getContext(), R.string.not_reserved, Toast.LENGTH_LONG).show();
+        }
+    }
 }
