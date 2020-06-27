@@ -55,6 +55,13 @@ public class HistoryFragment extends Fragment {
             }
         });
 
+        mViewModel.getAllWords().observe(this, new Observer<List<Lot>>() {
+            @Override
+            public void onChanged(@Nullable final List<Lot> lots) {
+                adapter.setLots(lots);
+            }
+        });
+
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
         fab.hide();
 

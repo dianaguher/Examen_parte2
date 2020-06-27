@@ -16,6 +16,7 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
 
     private final LayoutInflater mInflater;
     private List<History> mHistories = Collections.emptyList();
+    private List<Lot> mLots = Collections.emptyList();
     private HistoryListAdapter.onItemClickListener listener;
     private HistoryListAdapter.onItemLongClickListener listener2;
 
@@ -25,6 +26,11 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
 
     void setHistory(List<History> histories) {
         mHistories = histories;
+        notifyDataSetChanged();
+    }
+
+    void setLots(List<Lot> lots) {
+        mLots = lots;
         notifyDataSetChanged();
     }
 
@@ -42,13 +48,17 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
     @Override
     public void onBindViewHolder(HistoryListAdapter.HistoryViewHolder holder, final int position) {
         final History current = mHistories.get(position);
-        holder.historyItemView.setText(current.getStart());
-        if(current.getColor().equals("green")){
-            holder.historyItemView.setTextColor(Color.parseColor("#5AAC70")); //green
-        }else if(current.getColor().equals("red")){
-            holder.historyItemView.setTextColor(Color.parseColor("#BC0606")); //red
-        }else{
-            holder.historyItemView.setTextColor(Color.parseColor("#FF6E40")); //orange
+        for(Lot lot:mLots){
+            if(current.getLotId() == lot.getId()){
+                holder.historyItemView.setText(lot.getLot());
+                if(current.getColor().equals("green")){
+                    holder.historyItemView.setTextColor(Color.parseColor("#5AAC70")); //green
+                }else if(current.getColor().equals("red")){
+                    holder.historyItemView.setTextColor(Color.parseColor("#BC0606")); //red
+                }else{
+                    holder.historyItemView.setTextColor(Color.parseColor("#FF6E40")); //orange
+                }
+            }
         }
     }
 
