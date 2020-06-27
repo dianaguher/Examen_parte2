@@ -2,6 +2,8 @@ package com.example.examen_parte2;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +43,13 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
     public void onBindViewHolder(HistoryListAdapter.HistoryViewHolder holder, final int position) {
         final History current = mHistories.get(position);
         holder.historyItemView.setText(current.getStart());
+        if(current.getColor().equals("green")){
+            holder.historyItemView.setTextColor(Color.parseColor("#5AAC70")); //green
+        }else if(current.getColor().equals("red")){
+            holder.historyItemView.setTextColor(Color.parseColor("#BC0606")); //red
+        }else{
+            holder.historyItemView.setTextColor(Color.parseColor("#FF6E40")); //orange
+        }
     }
 
     class HistoryViewHolder extends RecyclerView.ViewHolder {

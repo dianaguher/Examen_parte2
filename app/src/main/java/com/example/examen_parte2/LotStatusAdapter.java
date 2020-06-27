@@ -91,7 +91,6 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
     }
 
     public interface onItemClickListener{
-      //  void onItemClick(Lot lot,int color);
       void onItemClick(Lot lot);
     }
 
