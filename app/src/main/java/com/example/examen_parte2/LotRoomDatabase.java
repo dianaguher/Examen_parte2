@@ -9,7 +9,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 
-@Database(entities = {Lot.class, History.class}, version = 5, exportSchema = false)
+@Database(entities = {Lot.class, History.class}, version = 6, exportSchema = false)
 public abstract class LotRoomDatabase extends RoomDatabase {
 
     public abstract LotDao lotDao();
@@ -36,7 +36,7 @@ public abstract class LotRoomDatabase extends RoomDatabase {
 
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
-            // super.onCreate(db);
+             //super.onCreate(db);
             super.onOpen(db);
             // If you want to keep the data through app restarts,
             // comment out the following line.
@@ -60,15 +60,15 @@ public abstract class LotRoomDatabase extends RoomDatabase {
             mDao.deleteAll();
             mDao.deleteAllHistories();
 
-            Lot lot = new Lot("Lot 1","4","25/06/2020","photo","video");
+            Lot lot = new Lot("Lot 1","4","25/06/2020","green","photo","video");
             mDao.insert(lot);
-            lot = new Lot("Lot 2","4","25/06/2020","photo","video");
+            lot = new Lot("Lot 2","4","25/06/2020","green","photo","video");
             mDao.insert(lot);
-            lot = new Lot("Lot 3","4","25/06/2020","photo","video");
+            lot = new Lot("Lot 3","4","25/06/2020","green","photo","video");
             mDao.insert(lot);
-            lot = new Lot("Lot 4","4","25/06/2020","photo","video");
+            lot = new Lot("Lot 4","4","25/06/2020","green","photo","video");
             mDao.insert(lot);
-            lot = new Lot("Lot 5","4","25/06/2020","photo","video");
+            lot = new Lot("Lot 5","4","25/06/2020","green","photo","video");
             mDao.insert(lot);
             return null;
         }

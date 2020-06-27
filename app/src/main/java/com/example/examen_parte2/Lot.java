@@ -23,9 +23,9 @@ public class Lot {
     @ColumnInfo(name = "date")
     private String mDate;
 
-    /*@NonNull
+    @NonNull
     @ColumnInfo(name = "color")
-    private String mColor;*/
+    private String mColor;
 
     @NonNull
     @ColumnInfo(name = "photo")
@@ -35,11 +35,11 @@ public class Lot {
     @ColumnInfo(name = "video")
     private String mVideo;
 
-    public Lot(@NonNull String lot,@NonNull String meter,@NonNull String date,@NonNull String photo,@NonNull String video) {
+    public Lot(@NonNull String lot,@NonNull String meter,@NonNull String date,@NonNull String color,@NonNull String photo,@NonNull String video) {
         this.mLot = lot;
         this.mMeter = meter;
         this.mDate = date;
-        //this.mColor = color;
+        this.mColor = color;
         this.mPhoto = photo;
         this.mVideo = video;
     }
@@ -59,10 +59,10 @@ public class Lot {
         return this.mDate;
     }
 
-/*    @NonNull
+    @NonNull
     public String getColor() {
         return this.mColor;
-    }*/
+    }
 
     @NonNull
     public String getPhoto() {

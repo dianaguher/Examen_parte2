@@ -62,28 +62,14 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
     public void onBindViewHolder(LotViewHolder holder, final int position) {
         final Lot current = mLots.get(position);
         holder.lotItemView.setText(current.getLot());
-        if(holder.lotItemView.getCurrentTextColor() == -16777216){
+        if(current.getColor().equals("green")){
             holder.lotItemView.setTextColor(Color.parseColor("#5AAC70")); //green
-        }
-      /*  if (mHistories.isEmpty()){
-            holder.lotItemView.setTextColor(Color.parseColor("#5AAC70")); //green
+        }else if(current.getColor().equals("red")){
+            holder.lotItemView.setTextColor(Color.parseColor("#BC0606")); //red
         }else{
-            for(History history : mHistories)
-            {
-                if(current.getId() == history.getLotId()){
-                    if(history.getColor().equals("red")){
-                        holder.lotItemView.setTextColor(Color.parseColor("#BC0606")); //red
-                    } else if(history.getColor().equals("orange")){
-                        holder.lotItemView.setTextColor(Color.parseColor("#FF6E40")); //orange
-                    }else{
-                        holder.lotItemView.setTextColor(Color.parseColor("#5AAC70")); //green
-                    }
-                }else{
-                    holder.lotItemView.setTextColor(Color.parseColor("#5AAC70")); //green
-                }
-            }
-        }*/
-       // holder.lotItemView.setTextColor(Color.parseColor("#5AAC70")); //green
+            holder.lotItemView.setTextColor(Color.parseColor("#FF6E40")); //orange
+        }
+
     }
 
     class LotViewHolder extends RecyclerView.ViewHolder {
@@ -97,7 +83,7 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
                 public void onClick(View view) {
                     int position = getAdapterPosition();
                     if(listener!= null && position != RecyclerView.NO_POSITION){
-                        listener.onItemClick(mLots.get(position),lotItemView.getCurrentTextColor());
+                        listener.onItemClick(mLots.get(position));
                     }
                 }
             });
@@ -105,7 +91,8 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
     }
 
     public interface onItemClickListener{
-        void onItemClick(Lot lot,int color);
+      //  void onItemClick(Lot lot,int color);
+      void onItemClick(Lot lot);
     }
 
     public  void setOnItemClickListener(onItemClickListener listener){

@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             Lot lot = new Lot(data.getStringExtra(NewLotActivity.EXTRA_LOT),
                     data.getStringExtra(NewLotActivity.EXTRA_METER),
                     data.getStringExtra(NewLotActivity.EXTRA_DATE),
+                    data.getStringExtra(NewLotActivity.EXTRA_COLOR),
                     data.getStringExtra(NewLotActivity.EXTRA_PHOTO),
                     data.getStringExtra(NewLotActivity.EXTRA_VIDEO));
             mLotViewModel.insert(lot);

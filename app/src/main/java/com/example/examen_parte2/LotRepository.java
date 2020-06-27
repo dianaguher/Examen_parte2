@@ -75,7 +75,6 @@ class LotRepository {
         }
     }
 
-
     public static class deleteAsyncTask extends AsyncTask<Lot, Void, Void> {
 
         private LotDao lotDao;
