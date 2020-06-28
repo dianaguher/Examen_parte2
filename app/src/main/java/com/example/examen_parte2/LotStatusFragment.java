@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +25,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.examen_parte2.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static android.app.Activity.RESULT_CANCELED;
@@ -35,6 +43,9 @@ public class LotStatusFragment extends Fragment {
 
     private int id;
     private String lotName,meter,date,color,photo,video;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private List<Lot> mLots = Collections.emptyList();
+    private List<History> mHistories = Collections.emptyList();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -52,6 +63,7 @@ public class LotStatusFragment extends Fragment {
             @Override
             public void onChanged(@Nullable final List<Lot> lots) {
                 adapter.setLots(lots);
+                mLots=lots;
             }
         });
 
@@ -59,6 +71,7 @@ public class LotStatusFragment extends Fragment {
             @Override
             public void onChanged(@Nullable final List<History> histories) {
                 adapter.setHistories(histories);
+                mHistories = histories;
             }
         });
 
@@ -86,6 +99,61 @@ public class LotStatusFragment extends Fragment {
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
         fab.hide();
 
+
+        final Thread thread = new Thread() {
+            @Override
+            public void run() {
+                for(int i=0; i<1;i++){
+                    try {
+                        while (!isInterrupted()) {
+                            Thread.sleep(1000);
+                            mHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //update lot status and add new history
+
+                                    String currentDate =  new SimpleDateFormat("dd/MM/yyyy",
+                                            Locale.getDefault()).format(new Date());
+                                    Date start = Calendar.getInstance().getTime();
+                                    Date end = addDays(start,15);
+                                    String startDate =  new SimpleDateFormat("dd/MM/yyyy",
+                                            Locale.getDefault()).format(start);
+                                    String endDate = new SimpleDateFormat("dd/MM/yyyy",
+                                            Locale.getDefault()).format(end);
+
+                                    for(Lot lot:mLots){
+                                        if(lot.getEnd().equals(currentDate) && lot.getColor().equals("red")){
+                                            //update lot
+                                            Lot newLot = new Lot(lot.getLot(),lot.getMeter(),
+                                                    lot.getDate(),"orange",endDate,
+                                                    lot.getPhoto(),lot.getVideo());
+                                            newLot.setId(lot.getId());
+                                            mLotViewModel.update(newLot);
+                                            addHistory(lot.getId(),startDate,endDate);
+                                        } else if(lot.getEnd().equals(currentDate) && lot.getColor().equals("orange")){
+                                            //update lot
+                                            Lot newLot = new Lot(lot.getLot(),lot.getMeter(),
+                                                    lot.getDate(),"green","",
+                                                    lot.getPhoto(),lot.getVideo());
+                                            newLot.setId(lot.getId());
+                                            mLotViewModel.update(newLot);
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    } catch (InterruptedException e) {
+                        Log.v("InterruptedException", e.getMessage());
+                    }
+                }
+            }
+        };
+
+
+
+        thread.start();
+
+
         return root;
     }
 
@@ -102,13 +170,18 @@ public class LotStatusFragment extends Fragment {
                 return;
             }
             //new history
-            History history = new History(data.getStringExtra(ReserveLotActivity.EXTRA_START),
-                    data.getStringExtra(ReserveLotActivity.EXTRA_END),
-                    data.getStringExtra(ReserveLotActivity.EXTRA_COLOR), id);
+            History history = new History(Objects.requireNonNull(data.getStringExtra(ReserveLotActivity.EXTRA_START)),
+                    Objects.requireNonNull(data.getStringExtra(ReserveLotActivity.EXTRA_END)),
+                    Objects.requireNonNull(data.getStringExtra(ReserveLotActivity.EXTRA_COLOR)), id);
             mLotViewModel.insert(history);
 
+
+            Date start = Calendar.getInstance().getTime();
+            Date end = addDays(start,5);
+            String endDate = new SimpleDateFormat("dd/MM/yyyy",
+                    Locale.getDefault()).format(end);
             //update lot
-          Lot lot = new Lot(lotName,meter,date,"red",photo,video);
+          Lot lot = new Lot(lotName,meter,date,"red",endDate,photo,video);
             lot.setId(id);
             mLotViewModel.update(lot);
 
@@ -116,5 +189,19 @@ public class LotStatusFragment extends Fragment {
         }else if(requestCode == RESERVE_LOT_ACTIVITY_REQUEST_CODE && resultCode == RESULT_CANCELED){
             Toast.makeText(getContext(), R.string.not_reserved, Toast.LENGTH_LONG).show();
         }
+    }
+
+    //get new dates for history
+    public Date addDays(Date date, int days){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DAY_OF_YEAR, days);
+        return calendar.getTime();
+    }
+
+    private void addHistory(int idLot,String start,String end){
+        History newHistory = new History(start,end,
+                "orange",idLot);
+        mLotViewModel.insert(newHistory);
     }
 }

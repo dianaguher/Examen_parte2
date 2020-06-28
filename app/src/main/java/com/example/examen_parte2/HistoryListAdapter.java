@@ -1,6 +1,8 @@
 package com.example.examen_parte2;
 
 import android.content.Context;
+
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Color;
@@ -9,8 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.HistoryViewHolder> {
 
@@ -56,7 +62,7 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
                 }else if(current.getColor().equals("red")){
                     holder.historyItemView.setTextColor(Color.parseColor("#BC0606")); //red
                 }else{
-                    holder.historyItemView.setTextColor(Color.parseColor("#FF6E40")); //orange
+                    holder.historyItemView.setTextColor(Color.parseColor("#F69576")); //orange
                 }
             }
         }
@@ -105,4 +111,6 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
     public  void setOnItemLongClickListener(HistoryListAdapter.onItemLongClickListener listener){
         this.listener2 = listener;
     }
+
+
 }

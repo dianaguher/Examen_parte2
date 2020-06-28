@@ -18,8 +18,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static androidx.core.app.ActivityCompat.startActivityForResult;
 import static androidx.core.content.ContextCompat.createDeviceProtectedStorageContext;
@@ -67,7 +70,7 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
         }else if(current.getColor().equals("red")){
             holder.lotItemView.setTextColor(Color.parseColor("#BC0606")); //red
         }else{
-            holder.lotItemView.setTextColor(Color.parseColor("#FF6E40")); //orange
+            holder.lotItemView.setTextColor(Color.parseColor("#F69576")); //orange
         }
 
     }
@@ -97,5 +100,4 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
     public  void setOnItemClickListener(onItemClickListener listener){
         this.listener = listener;
     }
-
 }

@@ -1,5 +1,6 @@
 package com.example.examen_parte2;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         // Get a new or existing ViewModel from the ViewModelProvider.
         mLotViewModel = ViewModelProviders.of(this).get(LotViewModel.class);
 
+
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     data.getStringExtra(NewLotActivity.EXTRA_METER),
                     data.getStringExtra(NewLotActivity.EXTRA_DATE),
                     data.getStringExtra(NewLotActivity.EXTRA_COLOR),
+                    data.getStringExtra(NewLotActivity.EXTRA_END),
                     data.getStringExtra(NewLotActivity.EXTRA_PHOTO),
                     data.getStringExtra(NewLotActivity.EXTRA_VIDEO));
             mLotViewModel.insert(lot);

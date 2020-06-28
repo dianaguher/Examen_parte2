@@ -1,6 +1,7 @@
 package com.example.examen_parte2;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -115,4 +116,5 @@ public class HistoryFragment extends Fragment {
 
         return root;
     }
+
 }

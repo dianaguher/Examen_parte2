@@ -9,7 +9,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 
-@Database(entities = {Lot.class, History.class}, version = 6, exportSchema = false)
+@Database(entities = {Lot.class, History.class}, version = 7, exportSchema = false)
 public abstract class LotRoomDatabase extends RoomDatabase {
 
     public abstract LotDao lotDao();
@@ -57,7 +57,7 @@ public abstract class LotRoomDatabase extends RoomDatabase {
         protected Void doInBackground(final Void... params) {
             // Start the app with a clean database every time.
             // Not needed if you only populate on creation.
-            mDao.deleteAll();
+          /*  mDao.deleteAll();
             mDao.deleteAllHistories();
 
             Lot lot = new Lot("Lot 1","4","25/06/2020","green","photo","video");
@@ -69,7 +69,7 @@ public abstract class LotRoomDatabase extends RoomDatabase {
             lot = new Lot("Lot 4","4","25/06/2020","green","photo","video");
             mDao.insert(lot);
             lot = new Lot("Lot 5","4","25/06/2020","green","photo","video");
-            mDao.insert(lot);
+            mDao.insert(lot);*/
             return null;
         }
     }

@@ -20,6 +20,7 @@ public class NewLotActivity extends AppCompatActivity {
     public static final String EXTRA_METER = "com.example.android.lotlistsql.METER";
     public static final String EXTRA_DATE = "com.example.android.lotlistsql.DATE";
     public static final String EXTRA_COLOR = "com.example.android.lotlistsql.COLOR";
+    public static final String EXTRA_END = "com.example.android.lotlistsql.END";
     public static final String EXTRA_PHOTO = "com.example.android.lotlistsql.PHOTO";
     public static final String EXTRA_VIDEO = "com.example.android.lotlistsql.VIDEO";
 
@@ -51,11 +52,13 @@ public class NewLotActivity extends AppCompatActivity {
                     String photo = mPhotoView.getText().toString();
                     String video = mVideoView.getText().toString();
                     String color = "green";
+                    String endDate = "";
                     String date = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
                     replyIntent.putExtra(EXTRA_LOT, lot);
                     replyIntent.putExtra(EXTRA_METER, meter);
                     replyIntent.putExtra(EXTRA_DATE, date);
                     replyIntent.putExtra(EXTRA_COLOR, color);
+                    replyIntent.putExtra(EXTRA_END,endDate);
                     replyIntent.putExtra(EXTRA_PHOTO, photo);
                     replyIntent.putExtra(EXTRA_VIDEO, video);
                     setResult(RESULT_OK, replyIntent);

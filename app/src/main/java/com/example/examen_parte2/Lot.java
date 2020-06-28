@@ -28,6 +28,10 @@ public class Lot {
     private String mColor;
 
     @NonNull
+    @ColumnInfo(name = "endDate")
+    private String mEnd;
+
+    @NonNull
     @ColumnInfo(name = "photo")
     private String mPhoto;
 
@@ -35,11 +39,12 @@ public class Lot {
     @ColumnInfo(name = "video")
     private String mVideo;
 
-    public Lot(@NonNull String lot,@NonNull String meter,@NonNull String date,@NonNull String color,@NonNull String photo,@NonNull String video) {
+    public Lot(@NonNull String lot,@NonNull String meter,@NonNull String date,@NonNull String color,@NonNull String end,@NonNull String photo,@NonNull String video) {
         this.mLot = lot;
         this.mMeter = meter;
         this.mDate = date;
         this.mColor = color;
+        this.mEnd = end;
         this.mPhoto = photo;
         this.mVideo = video;
     }
@@ -62,6 +67,11 @@ public class Lot {
     @NonNull
     public String getColor() {
         return this.mColor;
+    }
+
+    @NonNull
+    public String getEnd() {
+        return this.mEnd;
     }
 
     @NonNull

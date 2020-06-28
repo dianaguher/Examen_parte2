@@ -79,6 +79,7 @@ public class LotFragment extends Fragment {
                 intent.putExtra(UpdateLotActivity.EXTRA_LOT, lot.getLot());
                 intent.putExtra(UpdateLotActivity.EXTRA_METER, lot.getMeter());
                 intent.putExtra(UpdateLotActivity.EXTRA_COLOR, lot.getColor());
+                intent.putExtra(UpdateLotActivity.EXTRA_END, lot.getEnd());
                 intent.putExtra(UpdateLotActivity.EXTRA_PHOTO, lot.getPhoto());
                 intent.putExtra(UpdateLotActivity.EXTRA_VIDEO, lot.getVideo());
                 startActivityForResult(intent,UPDATE_LOT_ACTIVITY_REQUEST_CODE);
@@ -105,6 +106,7 @@ public class LotFragment extends Fragment {
                     data.getStringExtra(UpdateLotActivity.EXTRA_METER),
                     data.getStringExtra(UpdateLotActivity.EXTRA_DATE),
                     data.getStringExtra(UpdateLotActivity.EXTRA_COLOR),
+                    data.getStringExtra(UpdateLotActivity.EXTRA_END),
                     data.getStringExtra(UpdateLotActivity.EXTRA_PHOTO),
                     data.getStringExtra(UpdateLotActivity.EXTRA_VIDEO));
             lot.setId(id);
