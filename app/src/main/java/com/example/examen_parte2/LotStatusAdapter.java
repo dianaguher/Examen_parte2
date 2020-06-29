@@ -2,6 +2,7 @@ package com.example.examen_parte2;
 
 import android.content.Context;
 
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -35,10 +37,18 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
     private List<Lot> mLots = Collections.emptyList();
     private List<History> mHistories = Collections.emptyList();
     private onItemClickListener listener;
+    private AdapterCallback mAdapterCallback;
 
-    LotStatusAdapter(Context context) {
+    /*LotStatusAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
+    }*/
+
+    LotStatusAdapter(Context context,AdapterCallback callback){
+        this.mAdapterCallback=callback;
+        this.mInflater=LayoutInflater.from(context);
     }
+
+
 
     void setLots(List<Lot> lots) {
         mLots = lots;
@@ -64,6 +74,10 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
     @Override
     public void onBindViewHolder(LotViewHolder holder, final int position) {
         final Lot current = mLots.get(position);
+
+        mAdapterCallback.onMethodCallback(current);
+        //mAdapterCallback.onMethodCallback(mLots);
+
         holder.lotItemView.setText(current.getLot());
         if(current.getColor().equals("green")){
             holder.lotItemView.setTextColor(Color.parseColor("#5AAC70")); //green
@@ -99,5 +113,10 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
 
     public  void setOnItemClickListener(onItemClickListener listener){
         this.listener = listener;
+    }
+
+    public interface AdapterCallback {
+        void onMethodCallback(Lot lot);
+      //  void onMethodCallback(List<Lot> lot);
     }
 }

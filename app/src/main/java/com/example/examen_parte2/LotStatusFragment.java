@@ -36,10 +36,10 @@ import java.util.Objects;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-public class LotStatusFragment extends Fragment {
+public class LotStatusFragment extends Fragment implements LotStatusAdapter.AdapterCallback {
 
     public static final int RESERVE_LOT_ACTIVITY_REQUEST_CODE = 3;
-    private LotViewModel mLotViewModel;
+    public LotViewModel mLotViewModel;
 
     private int id;
     private String lotName,meter,date,color,photo,video;
@@ -52,12 +52,14 @@ public class LotStatusFragment extends Fragment {
         mLotViewModel = ViewModelProviders.of(this).get(LotViewModel.class);
         View root = inflater.inflate(R.layout.fragment_lot_status, container, false);
 
+
         RecyclerView recyclerView = root.findViewById(R.id.recyclerViewStatus);
-        final LotStatusAdapter adapter = new LotStatusAdapter(getContext());
+        final LotStatusAdapter adapter = new LotStatusAdapter(getContext(),this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mLotViewModel = ViewModelProviders.of(this).get(LotViewModel.class);
+
 
         mLotViewModel.getAllWords().observe(this, new Observer<List<Lot>>() {
             @Override
@@ -98,61 +100,6 @@ public class LotStatusFragment extends Fragment {
 
         FloatingActionButton fab = getActivity().findViewById(R.id.fab);
         fab.hide();
-
-
-        final Thread thread = new Thread() {
-            @Override
-            public void run() {
-                for(int i=0; i<1;i++){
-                    try {
-                        while (!isInterrupted()) {
-                            Thread.sleep(1000);
-                            mHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    //update lot status and add new history
-
-                                    String currentDate =  new SimpleDateFormat("dd/MM/yyyy",
-                                            Locale.getDefault()).format(new Date());
-                                    Date start = Calendar.getInstance().getTime();
-                                    Date end = addDays(start,15);
-                                    String startDate =  new SimpleDateFormat("dd/MM/yyyy",
-                                            Locale.getDefault()).format(start);
-                                    String endDate = new SimpleDateFormat("dd/MM/yyyy",
-                                            Locale.getDefault()).format(end);
-
-                                    for(Lot lot:mLots){
-                                        if(lot.getEnd().equals(currentDate) && lot.getColor().equals("red")){
-                                            //update lot
-                                            Lot newLot = new Lot(lot.getLot(),lot.getMeter(),
-                                                    lot.getDate(),"orange",endDate,
-                                                    lot.getPhoto(),lot.getVideo());
-                                            newLot.setId(lot.getId());
-                                            mLotViewModel.update(newLot);
-                                            addHistory(lot.getId(),startDate,endDate);
-                                        } else if(lot.getEnd().equals(currentDate) && lot.getColor().equals("orange")){
-                                            //update lot
-                                            Lot newLot = new Lot(lot.getLot(),lot.getMeter(),
-                                                    lot.getDate(),"green","",
-                                                    lot.getPhoto(),lot.getVideo());
-                                            newLot.setId(lot.getId());
-                                            mLotViewModel.update(newLot);
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                    } catch (InterruptedException e) {
-                        Log.v("InterruptedException", e.getMessage());
-                    }
-                }
-            }
-        };
-
-
-
-        thread.start();
-
 
         return root;
     }
@@ -199,9 +146,39 @@ public class LotStatusFragment extends Fragment {
         return calendar.getTime();
     }
 
-    private void addHistory(int idLot,String start,String end){
-        History newHistory = new History(start,end,
-                "orange",idLot);
-        mLotViewModel.insert(newHistory);
+    @Override
+    public void onMethodCallback(Lot lot) {
+        String currentDate =  new SimpleDateFormat("dd/MM/yyyy",
+                Locale.getDefault()).format(new Date());
+        Date start = Calendar.getInstance().getTime();
+        Date end = addDays(start,15);
+        String endDate = new SimpleDateFormat("dd/MM/yyyy",
+                Locale.getDefault()).format(end);
+
+        for(Lot myLot:mLots){
+            if(myLot==lot){
+                if(lot.getEnd().equals(currentDate) && lot.getColor().equals("red")){
+                    //update lot
+                    Lot newLot = new Lot(lot.getLot(),lot.getMeter(),
+                            lot.getDate(),"orange",endDate,
+                            lot.getPhoto(),lot.getVideo());
+                    newLot.setId(lot.getId());
+                    mLotViewModel.update(newLot);
+
+                    History newHistory = new History(currentDate,endDate,
+                            "orange",lot.getId());
+                    mLotViewModel.insert(newHistory);
+                    //  addHistory(lot.getId(),startDate,endDate);
+                } else if(lot.getEnd().equals(currentDate) && lot.getColor().equals("orange")){
+                    //update lot
+                    Lot newLot = new Lot(lot.getLot(),lot.getMeter(),
+                            lot.getDate(),"green","",
+                            lot.getPhoto(),lot.getVideo());
+                    newLot.setId(lot.getId());
+                    mLotViewModel.update(newLot);
+                }
+            }
+        }
+
     }
 }
