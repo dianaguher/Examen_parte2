@@ -39,7 +39,8 @@ import static android.app.Activity.RESULT_OK;
 public class LotStatusFragment extends Fragment implements LotStatusAdapter.AdapterCallback {
 
     public static final int RESERVE_LOT_ACTIVITY_REQUEST_CODE = 3;
-    public LotViewModel mLotViewModel;
+    public static final int DETAIL_HISTORIES_ACTIVITY_REQUEST_CODE = 4;
+    private LotViewModel mLotViewModel;
 
     private int id;
     private String lotName,meter,date,color,photo,video;
@@ -95,6 +96,16 @@ public class LotStatusFragment extends Fragment implements LotStatusAdapter.Adap
                 }else{
                     Toast.makeText(getContext(),R.string.can_not_reserve, Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        adapter.setOnLongItemClickListener(new LotStatusAdapter.onLongItemClickListener() {
+            @Override
+            public void onLongItemClick(Lot lot) {
+                id=lot.getId();
+                Intent intent = new Intent(getContext(), LotDetailHistoriesActivity.class);
+                intent.putExtra(LotDetailHistoriesActivity.EXTRA_ID, lot.getId());
+                startActivityForResult(intent,DETAIL_HISTORIES_ACTIVITY_REQUEST_CODE);
             }
         });
 

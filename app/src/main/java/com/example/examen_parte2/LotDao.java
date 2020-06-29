@@ -55,4 +55,7 @@ public interface LotDao {
 
    // @Query("SELECT * FROM history_table WHERE startDate LIKE :search " + "OR endDate LIKE :search")
     //LiveData<List<History>> findHistoryByDate(String search);
+
+    @Query("SELECT * FROM history_table WHERE lotId=:lotIdParam")
+    LiveData<List<History>> getHistoriesByLotId(int lotIdParam);
 }

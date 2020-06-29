@@ -12,6 +12,7 @@ class LotRepository {
     private LotDao mLotDao;
     private LiveData<List<Lot>> mAllLots;
     private LiveData<List<History>> mAllHistories;
+    private LiveData<List<History>> mGetHistoriesByLotId;
 
     LotRepository(Application application) {
         LotRoomDatabase db = LotRoomDatabase.getDatabase(application);
@@ -153,5 +154,10 @@ class LotRepository {
             lotDao.deleteAllHistories();
             return null;
         }
+    }
+
+    LiveData<List<History>>getHistoriesByLotId(int lotIdParam) {
+        mGetHistoriesByLotId=mLotDao.getHistoriesByLotId(lotIdParam);
+        return mGetHistoriesByLotId;
     }
 }

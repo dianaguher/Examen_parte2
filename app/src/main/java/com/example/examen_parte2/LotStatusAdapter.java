@@ -37,6 +37,7 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
     private List<Lot> mLots = Collections.emptyList();
     private List<History> mHistories = Collections.emptyList();
     private onItemClickListener listener;
+    private onLongItemClickListener longListener;
     private AdapterCallback mAdapterCallback;
 
     /*LotStatusAdapter(Context context) {
@@ -104,11 +105,26 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
                     }
                 }
             });
+
+            lotItemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    int position = getAdapterPosition();
+                    if(longListener!= null && position != RecyclerView.NO_POSITION){
+                        longListener.onLongItemClick(mLots.get(position));
+                    }
+                    return true;
+                }
+            });
         }
     }
 
     public interface onItemClickListener{
       void onItemClick(Lot lot);
+    }
+
+    public interface onLongItemClickListener{
+        void onLongItemClick(Lot lot);
     }
 
     public  void setOnItemClickListener(onItemClickListener listener){
@@ -118,5 +134,9 @@ public class LotStatusAdapter extends RecyclerView.Adapter<LotStatusAdapter.LotV
     public interface AdapterCallback {
         void onMethodCallback(Lot lot);
       //  void onMethodCallback(List<Lot> lot);
+    }
+
+    public  void setOnLongItemClickListener(onLongItemClickListener listener){
+        this.longListener = listener;
     }
 }

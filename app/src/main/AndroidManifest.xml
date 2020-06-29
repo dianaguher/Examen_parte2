@@ -28,6 +28,9 @@
         <activity
             android:name=".ReserveLotActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".LotDetailHistoriesActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
