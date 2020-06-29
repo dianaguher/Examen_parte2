@@ -58,4 +58,7 @@ public interface LotDao {
 
     @Query("SELECT * FROM history_table WHERE lotId=:lotIdParam")
     LiveData<List<History>> getHistoriesByLotId(int lotIdParam);
+
+    @Query("SELECT * FROM history_table WHERE start=:startDateParam")
+    LiveData<List<History>> getHistoriesByDate(String startDateParam);
 }

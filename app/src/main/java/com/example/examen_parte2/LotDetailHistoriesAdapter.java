@@ -18,6 +18,7 @@ public class LotDetailHistoriesAdapter extends RecyclerView.Adapter<LotDetailHis
 
     private final LayoutInflater mInflater;
     private List<History> mHistories = Collections.emptyList();
+    private List<Lot> mLots = Collections.emptyList();
 
     LotDetailHistoriesAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -25,6 +26,11 @@ public class LotDetailHistoriesAdapter extends RecyclerView.Adapter<LotDetailHis
 
     void setHistoriesByLotId(List<History> histories){
         mHistories = histories;
+        notifyDataSetChanged();
+    }
+
+    void setLotByLotId(List<Lot> lots){
+        mLots = lots;
         notifyDataSetChanged();
     }
 
@@ -42,28 +48,37 @@ public class LotDetailHistoriesAdapter extends RecyclerView.Adapter<LotDetailHis
     @Override
     public void onBindViewHolder(DetailHistoriesViewHolder holder, final int position) {
         final History current = mHistories.get(position);
-        holder.historiesStartDate.setText(current.getStart());
-        holder.historiesEndDate.setText(current.getEnd());
-        if(current.getColor().equals("green")){
-            holder.historiesStartDate.setTextColor(Color.parseColor("#5AAC70")); //green
-            holder.historiesEndDate.setTextColor(Color.parseColor("#5AAC70")); //green
-        }else if(current.getColor().equals("red")){
-            holder.historiesStartDate.setTextColor(Color.parseColor("#BC0606")); //red
-            holder.historiesEndDate.setTextColor(Color.parseColor("#BC0606")); //red
-        }else{
-            holder.historiesStartDate.setTextColor(Color.parseColor("#FF6E40")); //orange
-            holder.historiesEndDate.setTextColor(Color.parseColor("#FF6E40")); //orange
+        for(Lot lot:mLots) {
+            if (current.getLotId() == lot.getId()) {
+                holder.historiesStartDate.setText(current.getStart());
+                holder.historiesEndDate.setText(current.getEnd());
+                holder.lotName.setText(lot.getLot());
+                if (current.getColor().equals("green")) {
+                    holder.historiesStartDate.setTextColor(Color.parseColor("#5AAC70")); //green
+                    holder.historiesEndDate.setTextColor(Color.parseColor("#5AAC70")); //green
+                    holder.lotName.setTextColor(Color.parseColor("#5AAC70")); //green
+                } else if (current.getColor().equals("red")) {
+                    holder.historiesStartDate.setTextColor(Color.parseColor("#BC0606")); //red
+                    holder.historiesEndDate.setTextColor(Color.parseColor("#BC0606")); //red
+                    holder.lotName.setTextColor(Color.parseColor("#BC0606")); //red
+                } else {
+                    holder.historiesStartDate.setTextColor(Color.parseColor("#FF6E40")); //orange
+                    holder.historiesEndDate.setTextColor(Color.parseColor("#FF6E40")); //orange
+                    holder.lotName.setTextColor(Color.parseColor("#FF6E40")); //orange
+                }
+            }
         }
-
     }
 
     class DetailHistoriesViewHolder extends RecyclerView.ViewHolder {
         private final TextView historiesStartDate;
         private final TextView historiesEndDate;
+        private final TextView lotName;
         private DetailHistoriesViewHolder(final View itemView) {
             super(itemView);
             historiesStartDate = itemView.findViewById(R.id.detailStartDate);
             historiesEndDate = itemView.findViewById(R.id.detailEndDate);
+            lotName=itemView.findViewById(R.id.lotName);
         }
     }
 }

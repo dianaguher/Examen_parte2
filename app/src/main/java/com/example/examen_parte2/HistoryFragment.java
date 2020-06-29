@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.HalfFloat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -29,6 +30,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.zip.Inflater;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -42,14 +44,23 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         mViewModel = ViewModelProviders.of(this).get(LotViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_history, container, false);
+        final View root = inflater.inflate(R.layout.fragment_history, container, false);
 
         RecyclerView recyclerView = root.findViewById(R.id.recyclerViewHistory);
         final HistoryListAdapter adapter = new HistoryListAdapter(getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        mViewModel.getAllHistories().observe(this, new Observer<List<History>>() {
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
+        fab.hide();
+
+        mDateView = (TextView) root.findViewById(R.id.date_search);
+
+        mDateView.setText( new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date()));
+
+        String currentDate=mDateView.getText().toString();
+
+        mViewModel.getHistoriesByDate(currentDate).observe(this, new Observer<List<History>>() {
             @Override
             public void onChanged(@Nullable final List<History> histories) {
                 adapter.setHistory(histories);
@@ -62,13 +73,6 @@ public class HistoryFragment extends Fragment {
                 adapter.setLots(lots);
             }
         });
-
-        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
-        fab.hide();
-
-        mDateView = (TextView) root.findViewById(R.id.date_search);
-
-        mDateView.setText( new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date()));
         //mViewModel.findHistoryByDate(date);
         //search
           mDateView.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +98,18 @@ public class HistoryFragment extends Fragment {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 month = month+1;
-                String date = dayOfMonth + "/" + month + "/" + year;
+                String date="";
+                if(month<10){
+                    if(dayOfMonth<10){
+                        date = "0"+dayOfMonth + "/0" + month + "/" + year;
+                    }else{
+                        date = dayOfMonth + "/0" + month + "/" + year;
+                    }
+                }else if(dayOfMonth<10){
+                    date = "0" +dayOfMonth+"/" +  month + "/" + year;
+                }else {
+                    date = dayOfMonth+"/" + month + "/" + year;
+                }
                 mDateView.setText(date);
             }
         };
@@ -110,6 +125,25 @@ public class HistoryFragment extends Fragment {
                     String date = mDateView.getText().toString();
                     Toast.makeText(requireContext(), "Fecha: "+date, Toast.LENGTH_LONG).show();
                     //mViewModel.findHistoryByDate(date);
+
+                    RecyclerView recyclerView = root.findViewById(R.id.recyclerViewHistory);
+                    final HistoryListAdapter adapter = new HistoryListAdapter(getContext());
+                    recyclerView.setAdapter(adapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                    mViewModel.getHistoriesByDate(date).observe(HistoryFragment.this, new Observer<List<History>>() {
+                        @Override
+                        public void onChanged(@Nullable final List<History> histories) {
+                            adapter.setHistory(histories);
+                        }
+                    });
+
+                    mViewModel.getAllWords().observe(HistoryFragment.this, new Observer<List<Lot>>() {
+                        @Override
+                        public void onChanged(@Nullable final List<Lot> lots) {
+                            adapter.setLots(lots);
+                        }
+                    });
                 }
             }
         });

@@ -17,6 +17,7 @@ public class LotViewModel extends AndroidViewModel {
     private LotRepository mRepository;
     private LiveData<List<Lot>> mAllLots;
     private LiveData<List<History>> mGetHistoriesByLotId;
+    private LiveData<List<History>> mGetHistoriesByDate;
 
     public LotViewModel(Application application) {
         super(application);
@@ -45,13 +46,14 @@ public class LotViewModel extends AndroidViewModel {
         return mAllHistories;
     }
 
-    LiveData<List<History>> getHistoriesByDate() {
-        return mAllHistories;
-    }
-
     LiveData<List<History>> getHistoriesByLotId(int lotIdParam){
         mGetHistoriesByLotId=mRepository.getHistoriesByLotId(lotIdParam);
         return mGetHistoriesByLotId;
+    }
+
+    LiveData<List<History>> getHistoriesByDate(String startDateParam){
+        mGetHistoriesByDate=mRepository.getHistoriesByDate(startDateParam);
+        return mGetHistoriesByDate;
     }
 
     void insert(History history) {

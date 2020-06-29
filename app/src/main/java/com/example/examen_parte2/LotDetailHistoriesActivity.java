@@ -45,6 +45,13 @@ public class LotDetailHistoriesActivity extends AppCompatActivity {
                     adapter.setHistoriesByLotId(histories);
                 }
             });
+
+            mLotViewModel.getAllWords().observe(this, new Observer<List<Lot>>() {
+                @Override
+                public void onChanged(@Nullable final List<Lot> lots) {
+                    adapter.setLotByLotId(lots);
+                }
+            });
         }
     }
 }

@@ -14,6 +14,17 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/lotName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:text="Name"
+            android:textColor="@android:color/black"
+            android:textSize="16dp" />
+
+        <TextView
             android:id="@+id/detailStartDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,6 +45,7 @@
             android:text="Name"
             android:textColor="@android:color/black"
             android:textSize="16dp" />
+
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

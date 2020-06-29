@@ -13,6 +13,7 @@ class LotRepository {
     private LiveData<List<Lot>> mAllLots;
     private LiveData<List<History>> mAllHistories;
     private LiveData<List<History>> mGetHistoriesByLotId;
+    private LiveData<List<History>> mGetHistoriesByDate;
 
     LotRepository(Application application) {
         LotRoomDatabase db = LotRoomDatabase.getDatabase(application);
@@ -158,6 +159,11 @@ class LotRepository {
 
     LiveData<List<History>>getHistoriesByLotId(int lotIdParam) {
         mGetHistoriesByLotId=mLotDao.getHistoriesByLotId(lotIdParam);
+        return mGetHistoriesByLotId;
+    }
+
+    LiveData<List<History>>getHistoriesByDate(String startDateParam) {
+        mGetHistoriesByLotId=mLotDao.getHistoriesByDate(startDateParam);
         return mGetHistoriesByLotId;
     }
 }
